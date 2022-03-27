@@ -1,26 +1,31 @@
-import {useContext} from 'react'
 import { BookCard } from "../BookCard/BookCard";
-// import axios from 'axios'
 import { SortAndFilterButtons } from "../SortAndFilterButtons/SortAndFilterButtons";
 import styled from "styled-components";
 import { useEffect } from "react";
-import {BookContextData} from '../../context/BookContext'
+import axios from "axios";
+import { useState } from "react";
+
 
 export const Home = () => {
-  // get all books when user lands on the page
-  // populate them as mentioned below
+
+
+
+
+const [books,setBooks]=useState([])
+
+useEffect(()=>{
+  axios.get("http://localhost:8080/books").then(({data})=>{
+    setBooks(data)
+  })
+},[])
+
 
   const Main = styled.div`
     /* Apply some responsive styling to children */
+    display: flex;
+    gap: 50px;
   `;
-const {books,getBooks} = useContext(BookContextData)
 
-
-useEffect(()=>{
-  getBooks()
-},[]);
-
-// console.log(books, "from context")
 
   return (
     <div className="homeContainer">
@@ -31,17 +36,10 @@ useEffect(()=>{
         }
       />
 
-      <Main className="grid grid-cols-4 p-2 mainContainer">
-        {/* 
-            Iterate over books that you get from network
-            populate a <BookCard /> component
-            pass down books id, imageUrl, title, price and anything else that you want to 
-            show in books Card.
-        */
-            books.map(({ id, imageUrl, title, price })=>(
-        <BookCard  id={id} imageUrl={imageUrl} title={title} price={price}  />
-      ))
-        }
+      <Main className="mainContainer">
+        {books.map((e)=>{
+          return <BookCard key={e.id} id={e.id} imageUrl={e.imageUrl} title={e.title} price={e.price} />
+        })}
       </Main>
     </div>
   );

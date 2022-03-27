@@ -1,20 +1,31 @@
-import { Link } from "react-router-dom";
 
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 export const Navbar = () => {
+  const Main = styled.div`
+    /* Apply some responsive styling to children */
+    display: flex;
+    gap: 50px;
+    border: 2px solid black;
+    height: 40px;
+    background: teal;
+    padding: 10px;
+  `;
+
   return (
     <>
-      <div className="flex justify-between mx-20 navbar">
-      {/* <button onClick={onClick} className='px-1 m-1 text-white bg-blue-500 rounded border-2 border-blue-500 hover:bg-white hover:text-blue-500'></button> */}
-     <Link to="/"> <button className="px-1 m-1 text-white bg-blue-500 rounded border-2 border-blue-500 Home hover:bg-white hover:text-blue-500">Home</button></Link>
-     <Link to="/section/mystery"> <button className="px-1 m-1 text-white bg-blue-500 rounded border-2 border-blue-500 Mystery hover:bg-white hover:text-blue-500">Mystery</button></Link>
-      <Link to="/section/technology"><button className="px-1 m-1 text-white bg-blue-500 rounded border-2 border-blue-500 Technology hover:bg-white hover:text-blue-500">Technology</button></Link>
-      <Link to="/section/mythology"><button className="px-1 m-1 text-white bg-blue-500 rounded border-2 border-blue-500 Mythology hover:bg-white hover:text-blue-500">Mythology</button></Link>
-      <Link to="/section/history"><button className="px-1 m-1 text-white bg-blue-500 rounded border-2 border-blue-500 history hover:bg-white hover:text-blue-500">history</button></Link>
+      <Main className="navbar">
+        <Link to="/"><button className="home">Home</button></Link>
+        <Link to="/section/history"><button className="history">History</button></Link>
+        <Link to="/section/mystery"><button className="mystery">Mystery</button></Link>
+        <Link to="/section/mythology"><button className="mythology">Mythology</button></Link>
+        <Link to="/section/technology"><button className="technology">Technology</button></Link>
+       
         {/* Populate 5 buttons with EXACT same classnames as of their routes name */}
         {/* Example: 
-            <Link to="/history"><button className="history"> Link to history here  </button></Link>  */}
+            <button className="history"> Link to history here  </button>  */}
         {/* Home component will have `/` route and classname as `home`  */}
-      </div>
+      </Main>
     </>
   );
 };
