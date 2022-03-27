@@ -1,38 +1,52 @@
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { BookDetailsPage } from "../BookDetailsPage/BookDetailsPage";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { NotFoundPage } from "./NotFoundPage";
 
-export const BookCard = ({ id, imageUrl, title, price,onclick}) => {
-  
- return (<>
-       <div onClick={()=>{
-        <Link to={`/bookdetailspage/${id}`}></Link>
-       }}>
-         <img src={imageUrl} alt="" />
-         <h1>price:{price}</h1>
-         <h2>Title:{title}</h2>
-         <h3>Price:{price}</h3>
-       </div>
- </>)
-
+export const BookCard = ({Id, imageUrl, title, price }) => {
+  const [product,setProduct]=useState({ "name" : "loading",
+  // "title":"..." 
+  // "price": "....",
+  // "imageURL":"..",
+  // "id" : "."
+});
+  const [ notfound , setNotfound]=useState(true)
+  const {id}=useParams();
+  console.log(id)
+ useEffect( ()=>{
+  axios.get(`http://localhost:8080/products/${id}`).then((res)=>{
+    //  console.log(res)
+     setProduct(res.data)
+     console.log(product)
+    }).catch((err)=>{
+      console.log("not found error",err)
+      setNotfound(false)
+    })
+    },[ ]);
+  return (
+    <>
+    {(notfound) ?   <div
+        style={{
+          display: "flex",
+          paddingTop: "50px",
+          justifyContent: "center",
+          textAlign: "left",
+        }}
+      >
+       
+        <img src={`${product.image}`} alt="" />
+        <div className="productDetails" style={{ padding: "20px" }}>
+          <div>
+            <h2 className="productName">{product.name}</h2>
+            <h5 className="productPrice">Price : {product.price}</h5>
+          </div>
+          <h5>Specifications : </h5>
+          <div style={{ width: "700px", paddingLeft: "30px" }}>
+            {/* Show Product specification here */}
+          </div>
+        </div>
+      </div> : <NotFoundPage/> }
+    
+    </>
+  )
 };
-
-
-
-  // Bookcard is a card looking component, that is also a 'Link' for react-router
-  //  it's basically shows one books information.
-  // You can style custom tags with styled components in following way:
-  // styled(Link)`
-  //   color: xyz;
-  // `
-  //  now this container is a link that is also a card.
-  //  card will have following 'children':
-  //  div with className 'bookCard'
-  //  Image of the book
-  //  title of the book. h2 with classname 'title'
-  //  price of book with class 'price'
-  //
-  // rough example:
-  // <YourStyledLink to={}>
-  //    title, image price etc here
-  // </YourStyledLink>
