@@ -1,31 +1,34 @@
 import { BookCard } from "../BookCard/BookCard";
 import { SortAndFilterButtons } from "../SortAndFilterButtons/SortAndFilterButtons";
+import styled from "styled-components";
+import { useEffect } from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
 
 export const Home = () => {
 
-  // export const HomePage = () => {
-    const [list,setList]= useState([]);
-    console.log(list)
-   useEffect(()=>{
-   axios.get("http://localhost:3004/BookCard").then((res)=>{
-    setList(res.data)
-    console.log(list) 
+
+
+
+const [books,setBooks]=useState([])
+
+useEffect(()=>{
+  axios.get("http://localhost:8080/books").then(({data})=>{
+    setBooks(data)
+  })
+},[])
 
 
   const Main = styled.div`
     /* Apply some responsive styling to children */
+    display: flex;
+    gap: 50px;
   `;
- })
-},[])
+
+
   return (
-    <>
-    <div className="homeContainer" style={{
-      display: "flex",
-      justifyContent: "space-evenly",
-      paddingTop: "175px",
-    }}>
+    <div className="homeContainer">
       <h2 style={{ textAlign: "center" }}>Home</h2>
       <SortAndFilterButtons
         handleSort={
@@ -34,20 +37,10 @@ export const Home = () => {
       />
 
       <Main className="mainContainer">
-        {/* 
-        
-            Iterate over books that you get from network
-            populate a <BookCard /> component
-            pass down books id, imageUrl, title, price and anything else that you want to 
-            show in books Card.
-        */}
-        {list.map((el) => {
-          return <>   <Link to={`/products/${el.id}`} key={el.id} >{/* Show product image and name */ el.name}</Link> <br/> </>;
+        {books.map((e)=>{
+          return <BookCard key={e.id} id={e.id} imageUrl={e.imageUrl} title={e.title} price={e.price} />
         })}
-      
       </Main>
-      </div>
-      </>
-    );
-  };
-  
+    </div>
+  );
+};

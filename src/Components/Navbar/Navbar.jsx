@@ -1,26 +1,31 @@
+
 import { Link } from "react-router-dom";
-
-const links = [
-  // Fix this links array, it's an array of objects {to: "", title: ""}
-  {to:"/",title:"Home"},{to:"/products",title:"All Products"}
-];
-
+import styled from "styled-components";
 export const Navbar = () => {
+  const Main = styled.div`
+    /* Apply some responsive styling to children */
+    display: flex;
+    gap: 50px;
+    border: 2px solid black;
+    height: 40px;
+    background: teal;
+    padding: 10px;
+  `;
+
   return (
     <>
-      <div style = {{ display: "flex", justifyContent:"center"}} className="navbar">
-      {<button  className="navbar" onClick >a</button>}
-      {links.map((el)=>{
-        return(
-          <Link key={el.to} style={{ padding: "10px" }} to={el.to}>
-          {el.title}
-        </Link>
-        // <button className="history"> Link to history here  </button>  
-      );
-    })}
-
- 
-</div>
+      <Main className="navbar">
+        <Link to="/"><button className="home">Home</button></Link>
+        <Link to="/section/history"><button className="history">History</button></Link>
+        <Link to="/section/mystery"><button className="mystery">Mystery</button></Link>
+        <Link to="/section/mythology"><button className="mythology">Mythology</button></Link>
+        <Link to="/section/technology"><button className="technology">Technology</button></Link>
+       
+        {/* Populate 5 buttons with EXACT same classnames as of their routes name */}
+        {/* Example: 
+            <button className="history"> Link to history here  </button>  */}
+        {/* Home component will have `/` route and classname as `home`  */}
+      </Main>
     </>
   );
 };
